@@ -36,14 +36,25 @@ class AppwriteAuthenticationRepository
       // email: email,
       // password: password,
       // TODO Remove this, but a useful fix cause it's so boring...
-      email: 'john.doe@stack-labs.com',
-      password: 'awesomepass',
+      email: 'john@company.com',
+      password: 'testtest',
     )
         .then((session) {
       _session = session;
       updateAuthStatus(AuthenticationStatus.authenticated);
       return session;
     });
+  }
+
+  @override
+  Future<void> createAccount({
+    required String email,
+    required String password,
+  }) {
+    return account.create(
+      email: email,
+      password: password,
+    );
   }
 
   @override

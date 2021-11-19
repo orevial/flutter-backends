@@ -1,6 +1,6 @@
 import 'package:appwrite_app/authentication/bloc/authentication_cubit.dart';
 import 'package:appwrite_app/home_page.dart';
-import 'package:appwrite_app/login/pages/login_page.dart';
+import 'package:appwrite_app/login/pages/authentication_page.dart';
 import 'package:appwrite_app/splash_page.dart';
 import 'package:appwrite_app/utils/repository_utils.dart';
 import 'package:backend_repository/backend_repository.dart';
@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'breweries/bloc/brewery_cubit.dart';
-import 'login/bloc/login_cubit.dart';
 
 void main() async {
   runApp(MyApp());
@@ -57,12 +56,7 @@ class MyApp extends StatelessWidget {
                 } else {
                   _navigator.pushAndRemoveUntil(
                     MaterialPageRoute<void>(
-                      builder: (_) => BlocProvider(
-                        create: (_) => LoginCubit(
-                          context.read<AuthenticationRepository>(),
-                        ),
-                        child: const LoginPage(),
-                      ),
+                      builder: (_) => const AuthenticationPage(),
                     ),
                     (_) => false,
                   );

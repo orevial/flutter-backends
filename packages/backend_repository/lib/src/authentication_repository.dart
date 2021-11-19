@@ -24,6 +24,11 @@ abstract class AuthenticationRepository<T> {
     return _controller.stream;
   }
 
+  Future<void> createAccount({
+    required String email,
+    required String password,
+  });
+
   Future<T> login({
     required String email,
     required String password,
