@@ -1,9 +1,10 @@
-import 'package:appwrite_app/beers/beers_cubit.dart';
-import 'package:appwrite_app/beers/pages/beers_list_page.dart';
-import 'package:appwrite_app/breweries/brewery_cubit.dart';
+import 'package:appwrite_app/breweries/bloc/brewery_beers_cubit.dart';
+import 'package:appwrite_app/breweries/bloc/brewery_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
+import 'brewery_page.dart';
 
 class BreweryListPage extends StatelessWidget {
   const BreweryListPage({Key? key}) : super(key: key);
@@ -55,7 +56,7 @@ class BreweryListPage extends StatelessWidget {
                     Navigator.of(context).push<void>(
                       MaterialPageRoute<void>(
                         builder: (_) => BlocProvider(
-                          create: (_) => BeersCubit(
+                          create: (_) => BreweryBeersCubit(
                             context.read<BreweryCubit>().database,
                             brewery,
                           ),

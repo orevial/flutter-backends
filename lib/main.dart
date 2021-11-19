@@ -1,6 +1,5 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite_app/authentication/authentication_cubit.dart';
-import 'package:appwrite_app/breweries/brewery_cubit.dart';
+import 'package:appwrite_app/authentication/bloc/authentication_cubit.dart';
 import 'package:appwrite_app/home_page.dart';
 import 'package:appwrite_app/login/pages/login_page.dart';
 import 'package:appwrite_app/splash_page.dart';
@@ -8,11 +7,9 @@ import 'package:appwrite_app/utils/app_write_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'authentication/authentication_service.dart';
-import 'login/login_cubit.dart';
-
-const breweryCollectionId = '61923aa141911';
-const beersCollectionId = '61923abb90834';
+import 'authentication/authentication_repository.dart';
+import 'breweries/bloc/brewery_cubit.dart';
+import 'login/bloc/login_cubit.dart';
 
 final _state = AppWriteState(client: Client());
 final _authenticationService = AuthenticationService(_state.account);
@@ -69,7 +66,6 @@ class MyApp extends StatelessWidget {
                     (_) => false,
                   );
                 } else {
-                  print('Here ? ');
                   _navigator.pushAndRemoveUntil(
                     MaterialPageRoute<void>(
                       builder: (_) => BlocProvider(

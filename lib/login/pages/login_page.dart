@@ -1,4 +1,4 @@
-import 'package:appwrite_app/login/login_cubit.dart';
+import 'package:appwrite_app/login/bloc/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,18 +15,25 @@ class LoginPage extends StatelessWidget {
         title: const Text('Login'),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TextFormField(
-            onChanged: (email) => login.updateEmail(email),
-            decoration: const InputDecoration(
-              label: Text('Email'),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextFormField(
+              onChanged: (email) => login.updateEmail(email),
+              decoration: const InputDecoration(
+                label: Text('Email'),
+              ),
             ),
           ),
           const SizedBox(height: 20),
-          TextFormField(
-            onChanged: (pwd) => login.updatePassword(pwd),
-            decoration: const InputDecoration(
-              label: Text('Password'),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextFormField(
+              onChanged: (pwd) => login.updatePassword(pwd),
+              decoration: const InputDecoration(
+                label: Text('Password'),
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -73,23 +80,17 @@ class LoginPage extends StatelessWidget {
         builder: (BuildContext context) {
           return WillPopScope(
               onWillPop: () async => false,
-              child: SimpleDialog(
-                  key: key,
-                  backgroundColor: Colors.black54,
-                  children: <Widget>[
-                    Center(
-                      child: Column(children: const [
-                        CircularProgressIndicator(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Please Wait....",
-                          style: TextStyle(color: Colors.blueAccent),
-                        )
-                      ]),
-                    )
-                  ]));
+              child: SimpleDialog(key: key, children: <Widget>[
+                Center(
+                  child: Column(children: const [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("Please Wait....")
+                  ]),
+                )
+              ]));
         });
   }
 }

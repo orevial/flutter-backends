@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:appwrite_app/authentication/authentication_cubit.dart';
-import 'package:appwrite_app/home_page.dart';
+import 'package:appwrite_app/authentication/bloc/authentication_cubit.dart';
 
 class AuthenticationService {
   final Account account;
@@ -19,13 +18,12 @@ class AuthenticationService {
   AuthenticationService(this.account) {
     _controller.add(AuthenticationStatus.unknown);
     account.getSession(sessionId: 'current').then((session) {
-      print('Got existing session');
-      print(session.toString2());
-      print('Authenticated');
+      if (session.isExpired) {
+        throw 'Session expired';
+      }
       _session = session;
       _controller.add(AuthenticationStatus.authenticated);
     }).catchError((Object e) {
-      print('Unauthenticated');
       _controller.add(AuthenticationStatus.unauthenticated);
     });
   }
@@ -73,9 +71,6 @@ class AuthenticationService {
       _session = session;
       _controller.add(AuthenticationStatus.authenticated);
       return session;
-    }).catchError((Object e) {
-      print('Error on login: $e');
-      throw e;
     });
   }
 
@@ -85,4 +80,9 @@ class AuthenticationService {
       _controller.add(AuthenticationStatus.unauthenticated);
     });
   }
+}
+
+extension SessionUtils on Session {
+  bool get isExpired => DateTime.fromMillisecondsSinceEpoch(expire * 1000)
+      .isBefore(DateTime.now().toUtc());
 }

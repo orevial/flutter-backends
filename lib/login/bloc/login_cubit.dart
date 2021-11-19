@@ -1,5 +1,5 @@
 
-import 'package:appwrite_app/authentication/authentication_service.dart';
+import 'package:appwrite_app/authentication/authentication_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';

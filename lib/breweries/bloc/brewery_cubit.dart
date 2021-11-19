@@ -1,6 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite_app/breweries/models/brewery.dart';
-import 'package:appwrite_app/main.dart';
+import 'package:appwrite_app/utils/app_write_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

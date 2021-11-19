@@ -1,22 +1,20 @@
 import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
+import 'package:appwrite_app/beers/beer.dart';
 import 'package:appwrite_app/breweries/models/brewery.dart';
-import 'package:appwrite_app/main.dart';
+import 'package:appwrite_app/utils/app_write_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'beer.dart';
+part 'brewery_beers_state.dart';
 
-part 'beers_state.dart';
-
-class BeersCubit extends Cubit<BeersState> {
+class BreweryBeersCubit extends Cubit<BreweryBeersState> {
   final Database database;
   final Brewery brewery;
 
-  BeersCubit(
+  BreweryBeersCubit(
     this.database,
     this.brewery,
-  ) : super(BeersLoadInProgress()) {
+  ) : super(BreweryBeersLoadInProgress()) {
     _loadBeers();
   }
 
@@ -27,22 +25,21 @@ class BeersCubit extends Cubit<BeersState> {
       documentId: brewery.id,
     )
         .then((listDocs) {
-      // TODO Will probably fail
       final beers = (listDocs.data['beers'] as List<dynamic>)
           .map((d) => d as Map<String, dynamic>)
           .map((d) => Beer(
                 id: d[r'$id'],
                 name: d['name'],
                 type: d['type'],
-                abv: 5.5,
+                abv: d['abv'],
+                imageId: d['internal_image_id'],
                 // TODO Fix this
                 // abv: d['abv'] as dynamic,
               ))
           .toList();
-      emit(BeersLoadSuccess(beers));
+      emit(BreweryBeersLoadSuccess(beers));
     }).catchError((Object e) {
-      print(e);
-      emit(BeersLoadFailure());
+      emit(BreweryBeersLoadFailure());
     });
   }
 }
