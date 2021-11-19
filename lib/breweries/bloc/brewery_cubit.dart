@@ -1,36 +1,27 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite_app/breweries/models/brewery.dart';
-import 'package:appwrite_app/utils/app_write_state.dart';
+import 'package:backend_repository/backend_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'brewery_state.dart';
 
 class BreweryCubit extends Cubit<BreweriesState> {
-  final Database database;
-  final Realtime realtime;
+  final BreweryRepository breweryRepository;
 
-  late final Stream<RealtimeMessage> _stream =
-      realtime.subscribe(['collections.$breweryCollectionId.documents']).stream;
-
-  BreweryCubit(
-    this.database,
-    this.realtime,
-  ) : super(BreweriesLoadInProgress()) {
+  BreweryCubit(this.breweryRepository) : super(BreweriesLoadInProgress()) {
     _loadBreweries();
-    _stream.listen((message) {
+    breweryRepository.breweryChanges.listen((event) {
       if (state is BreweriesLoadSuccess) {
-        switch (message.event) {
-          case 'database.documents.create':
-          case 'database.documents.update':
+        switch (event.runtimeType) {
+          case BreweryCreatedEvent:
+          case BreweryUpdatedEvent:
             _loadBreweries();
             break;
-          case 'database.documents.delete':
+          case BreweryDeletedEvent:
             emit(
               BreweriesLoadSuccess(
                 (state as BreweriesLoadSuccess)
                     .breweries
-                    .where((b) => b.id != message.payload[r'$id'])
+                    .where((b) => b.id != (event as BreweryDeletedEvent).id)
                     .toList(),
               ),
             );
@@ -41,28 +32,14 @@ class BreweryCubit extends Cubit<BreweriesState> {
   }
 
   void _loadBreweries() async {
-    await database
-        .listDocuments(collectionId: breweryCollectionId)
-        .then((listDocs) {
-      final breweries = listDocs.documents
-          .map((d) => Brewery(
-                id: d.$id,
-                name: d.data['name'],
-                description: d.data['description'],
-                country: d.data['country'],
-              ))
-          .toList();
-      emit(BreweriesLoadSuccess(breweries));
-    }).catchError((Object e) {
-      emit(BreweriesLoadFailure());
-    });
+    await breweryRepository
+        .loadBreweries()
+        .then((breweries) => emit(BreweriesLoadSuccess(breweries)))
+        .catchError((Object e) => emit(BreweriesLoadFailure()));
   }
 
   void deleteBrewery(Brewery brewery) async {
-    await database.deleteDocument(
-      collectionId: breweryCollectionId,
-      documentId: brewery.id,
-    );
+    await breweryRepository.deleteBrewery(brewery);
     emit(
       BreweriesLoadSuccess(
         (state as BreweriesLoadSuccess)

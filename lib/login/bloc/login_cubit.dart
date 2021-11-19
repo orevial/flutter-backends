@@ -1,5 +1,4 @@
-
-import 'package:appwrite_app/authentication/authentication_repository.dart';
+import 'package:backend_repository/backend_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -7,9 +6,9 @@ import 'package:meta/meta.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  final AuthenticationService authService;
+  final AuthenticationRepository authRepository;
 
-  LoginCubit(this.authService) : super(LoginFormInProgress());
+  LoginCubit(this.authRepository) : super(LoginFormInProgress());
 
   void updateEmail(String email) {
     emit(
@@ -32,7 +31,7 @@ class LoginCubit extends Cubit<LoginState> {
   void login() async {
     final stateBefore = state as LoginFormInProgress;
     emit(LoginInProgress());
-    await authService
+    await authRepository
         .login(
           email: stateBefore.email,
           password: stateBefore.password,

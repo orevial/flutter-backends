@@ -20,5 +20,3 @@ class AuthenticationState extends Equatable {
   @override
   List<Object?> get props => [status, session];
 }
-
-enum AuthenticationStatus { unknown, authenticated, unauthenticated }

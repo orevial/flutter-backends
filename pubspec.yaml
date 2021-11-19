@@ -14,9 +14,13 @@ dependencies:
   appwrite: ^2.0.3
   cached_network_image: ^3.1.0+1
   cupertino_icons: ^1.0.4
-  flutter_bloc: ^7.3.3
+  flutter_bloc: ^8.0.0
   flutter_slidable: ^1.1.0
   equatable: ^2.0.3
+  backend_repository:
+    path: packages/backend_repository
+  appwrite_repository:
+    path: packages/appwrite_repository
 
 dev_dependencies:
   flutter_test:

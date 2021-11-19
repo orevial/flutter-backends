@@ -1,6 +1,6 @@
 import 'package:appwrite_app/beers/bloc/beers_by_style_cubit.dart';
 import 'package:appwrite_app/beers/pages/beers_by_style_page.dart';
-import 'package:appwrite_app/utils/app_write_state.dart';
+import 'package:backend_repository/backend_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +11,6 @@ class BeersStylesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appWriteState = context.read<AppWriteState>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Beers styles'),
@@ -26,7 +25,7 @@ class BeersStylesPage extends StatelessWidget {
                 MaterialPageRoute<void>(
                   builder: (_) => BlocProvider(
                       create: (_) => BeersByStyleCubit(
-                            appWriteState.database,
+                            context.read<BeersRepository>(),
                             styles[i],
                           ),
                       child: const BeersByStylePage()),

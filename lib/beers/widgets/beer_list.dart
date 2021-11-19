@@ -1,8 +1,7 @@
-import 'package:appwrite_app/beers/beer.dart';
-import 'package:appwrite_app/utils/app_write_state.dart';
+import 'package:appwrite_app/utils/repository_utils.dart';
+import 'package:backend_repository/backend_repository.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BeerList extends StatelessWidget {
   final List<Beer> beers;
@@ -14,7 +13,6 @@ class BeerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appWriteState = context.read<AppWriteState>();
     return ListView.builder(
       itemCount: beers.length,
       itemBuilder: (_, i) {
@@ -24,7 +22,7 @@ class BeerList extends StatelessWidget {
               ? CachedNetworkImage(
                   width: 50,
                   height: 50,
-                  imageUrl: appWriteState.imageUrl(beer.imageId!),
+                  imageUrl: imageUrl(beer.imageId!),
                   placeholder: (_, __) => _placeholderImage(),
                 )
               : _placeholderImage(),

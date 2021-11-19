@@ -1,0 +1,11 @@
+name: appwrite_repository.dart
+description: Appwrite repository
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+
+dependencies:
+  backend_repository:
+    path: ../backend_repository
+  appwrite: ^2.0.3

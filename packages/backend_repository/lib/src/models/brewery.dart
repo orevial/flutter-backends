@@ -1,5 +1,6 @@
-import 'package:appwrite_app/beers/beer.dart';
 import 'package:equatable/equatable.dart';
+
+import 'beer.dart';
 
 class Brewery extends Equatable {
   final String id;
