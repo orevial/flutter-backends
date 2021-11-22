@@ -10,11 +10,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'breweries/bloc/brewery_cubit.dart';
 
 void main() async {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  final repositories = await backendRepositories(Backend.firebase);
+
+  runApp(
+    MyApp(repositories: repositories),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  final List<RepositoryProvider> repositories;
+
+  MyApp({
+    required this.repositories,
+    Key? key,
+  }) : super(key: key);
 
   final _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -23,7 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: backendRepositories(Backend.appwrite),
+      providers: repositories,
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthenticationCubit>(

@@ -30,7 +30,7 @@ class AppwriteAuthenticationRepository
   }
 
   @override
-  Future<Session> login({required String email, required String password}) {
+  Future<void> login({required String email, required String password}) {
     return account
         .createSession(
       // email: email,
@@ -66,7 +66,7 @@ class AppwriteAuthenticationRepository
   }
 
   @override
-  Session? get session => _session;
+  bool get isAuthenticated => _session != null;
 }
 
 extension SessionUtils on Session {

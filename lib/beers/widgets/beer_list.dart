@@ -1,6 +1,7 @@
 import 'package:flutter_backends/utils/repository_utils.dart';
 import 'package:backend_repository/backend_repository.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 class BeerList extends StatelessWidget {
@@ -16,14 +17,24 @@ class BeerList extends StatelessWidget {
     return ListView.builder(
       itemCount: beers.length,
       itemBuilder: (_, i) {
+        final beerRepository = context.read<BeersRepository>();
         final beer = beers[i];
         return ListTile(
           leading: beer.hasImage
-              ? CachedNetworkImage(
-                  width: 50,
-                  height: 50,
-                  imageUrl: imageUrl(beer.imageId!),
-                  placeholder: (_, __) => _placeholderImage(),
+              ? FutureBuilder<String?>(
+                  future: beerRepository.beerImageUrl(beer),
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      return CachedNetworkImage(
+                        width: 50,
+                        height: 50,
+                        imageUrl: snapshot.data!,
+                        placeholder: (_, __) => _placeholderImage(),
+                      );
+                    }
+                    return _placeholderImage();
+                  },
                 )
               : _placeholderImage(),
           title: Text(beers[i].name),

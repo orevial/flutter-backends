@@ -6,5 +6,8 @@ import 'models/beer.dart';
 
 abstract class BeersRepository {
   Future<List<Beer>> loadBreweryBeers(Brewery brewery);
+
   Future<List<Beer>> loadStyleBeers(String style);
+
+  Future<String?> beerImageUrl(Beer beer);
 }

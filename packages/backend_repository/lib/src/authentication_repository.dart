@@ -2,9 +2,8 @@ import 'dart:async';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }
 
-abstract class AuthSession {}
-
 abstract class AuthenticationRepository<T> {
+  // TODO Maybe move this to repository implementations as certain backends API such as Firebase do not need this
   late final StreamController<AuthenticationStatus> _controller =
       StreamController<AuthenticationStatus>(
     onListen: _startTimer,
@@ -16,7 +15,7 @@ abstract class AuthenticationRepository<T> {
     _controller.add(AuthenticationStatus.unknown);
   }
 
-  T? get session;
+  bool get isAuthenticated;
 
   void checkAuthStatus();
 
@@ -29,7 +28,7 @@ abstract class AuthenticationRepository<T> {
     required String password,
   });
 
-  Future<T> login({
+  Future<void> login({
     required String email,
     required String password,
   });

@@ -1,0 +1,14 @@
+name: firebase_repository
+description: Firebase repository
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+
+dependencies:
+  backend_repository:
+    path: ../backend_repository
+  firebase_core: ^1.10.0
+  firebase_auth: ^3.2.0
+  firebase_storage: ^10.1.0
+  cloud_firestore: ^3.1.0

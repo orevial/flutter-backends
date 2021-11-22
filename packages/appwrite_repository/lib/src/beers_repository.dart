@@ -1,20 +1,20 @@
 import 'dart:async';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite_repository/src/settings.dart';
 import 'package:backend_repository/backend_repository.dart';
-
-import 'appwrite_utils.dart';
 
 class AppwriteBeersRepository extends BeersRepository {
   final Database database;
+  final AppWriteSettings settings;
 
-  AppwriteBeersRepository(this.database);
+  AppwriteBeersRepository(this.database, this.settings);
 
   @override
   Future<List<Beer>> loadBreweryBeers(Brewery brewery) {
     return database
         .getDocument(
-          collectionId: breweryCollectionId,
+          collectionId: settings.breweryCollectionId,
           documentId: brewery.id,
         )
         .then((doc) => doc.data['beers'] as List<dynamic>)
@@ -30,7 +30,7 @@ class AppwriteBeersRepository extends BeersRepository {
   Future<List<Beer>> loadStyleBeers(String style) {
     return database
         .listDocuments(
-          collectionId: beersCollectionId,
+          collectionId: settings.beersCollectionId,
           filters: ['type=$style'],
           limit: 10,
           orderType: '',
@@ -50,4 +50,8 @@ class AppwriteBeersRepository extends BeersRepository {
       imageId: doc['internal_image_id'],
     );
   }
+
+  @override
+  Future<String?> beerImageUrl(Beer beer) async =>
+      '${settings.endpoint}/storage/files/${beer.imageId}/download?project=${settings.projectId}';
 }

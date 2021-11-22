@@ -1,19 +1,19 @@
 import 'dart:async';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite_repository/appwrite_repository.dart';
 import 'package:backend_repository/backend_repository.dart';
 import 'package:backend_repository/src/models/brewery.dart';
-
-import 'appwrite_utils.dart';
 
 class AppwriteBreweryRepository extends BreweryRepository {
   final Database database;
   final Realtime realtime;
+  final AppWriteSettings settings;
 
-  AppwriteBreweryRepository(this.database, this.realtime);
+  AppwriteBreweryRepository(this.database, this.realtime, this.settings);
 
-  late final Stream<RealtimeMessage> _stream =
-      realtime.subscribe(['collections.$breweryCollectionId.documents']).stream;
+  late final Stream<RealtimeMessage> _stream = realtime.subscribe(
+      ['collections.${settings.breweryCollectionId}.documents']).stream;
 
   Stream<BreweryEvent> get breweryChanges => _stream.map((message) {
         switch (message.event) {
@@ -30,7 +30,7 @@ class AppwriteBreweryRepository extends BreweryRepository {
   @override
   Future<List<Brewery>> loadBreweries() {
     return database
-        .listDocuments(collectionId: breweryCollectionId)
+        .listDocuments(collectionId: settings.breweryCollectionId)
         .then((listDocs) {
       return listDocs.documents
           .map((d) => Brewery(
@@ -46,7 +46,7 @@ class AppwriteBreweryRepository extends BreweryRepository {
   @override
   Future<void> deleteBrewery(Brewery brewery) {
     return database.deleteDocument(
-      collectionId: breweryCollectionId,
+      collectionId: settings.breweryCollectionId,
       documentId: brewery.id,
     );
   }

@@ -5,9 +5,10 @@ This project offers samples to demonstrate usage of various Flutter backends.
 Currently the project is able to use these backends: 
 
 - [AppWrite](https://appwrite.io/)
+- [Firebase](https://firebase.google.com/)
+- [Supabase](https://supabase.com/)
 
 Please feel free to propose support for another backend !
-
 
 ## Features
 
@@ -33,6 +34,7 @@ Note that this app only shows how to use backends APIs from a client perspective
 Other projects aim at showing how to use other server-side (admin) features such as Functions:
 
 - [AppWrite server features project](https://github.com/orevial/appwrite-platform)
+- [Firebase server features project](https://github.com/orevial/firebase-platform)
 
 Of course many more backend-related features could be explored, 
 if you think some are missing please feel free to propose a PR, I'd be happy

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:appwrite/models.dart';
 import 'package:backend_repository/backend_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -25,9 +24,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       case AuthenticationStatus.unauthenticated:
         return emit(const AuthenticationState.unauthenticated());
       case AuthenticationStatus.authenticated:
-        final session = _authRepository.session;
-        return emit(session != null
-            ? AuthenticationState.authenticated(session)
+        return emit(_authRepository.isAuthenticated
+            ? const AuthenticationState.authenticated()
             : const AuthenticationState.unauthenticated());
       default:
         return emit(const AuthenticationState.unknown());
