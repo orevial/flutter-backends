@@ -1,4 +1,4 @@
-import 'package:appwrite_app/utils/repository_utils.dart';
+import 'package:flutter_backends/utils/repository_utils.dart';
 import 'package:backend_repository/backend_repository.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

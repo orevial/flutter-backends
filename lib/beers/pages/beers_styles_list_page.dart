@@ -1,5 +1,5 @@
-import 'package:appwrite_app/beers/bloc/beers_by_style_cubit.dart';
-import 'package:appwrite_app/beers/pages/beers_by_style_page.dart';
+import 'package:flutter_backends/beers/bloc/beers_by_style_cubit.dart';
+import 'package:flutter_backends/beers/pages/beers_by_style_page.dart';
 import 'package:backend_repository/backend_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

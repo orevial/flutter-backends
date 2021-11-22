@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.appwrite_app">
+    package="com.stacklabs.flutter_backends">
    <application
-        android:label="appwrite_app"
+        android:label="flutter_backends"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

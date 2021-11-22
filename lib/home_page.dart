@@ -1,4 +1,4 @@
-import 'package:appwrite_app/beers/pages/beers_styles_list_page.dart';
+import 'package:flutter_backends/beers/pages/beers_styles_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

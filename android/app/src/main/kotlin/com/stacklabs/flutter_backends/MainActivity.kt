@@ -1,4 +1,4 @@
-package com.example.appwrite_app
+package com.stacklabs.flutter_backends
 
 import io.flutter.embedding.android.FlutterActivity
 

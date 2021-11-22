@@ -1,7 +1,7 @@
-import 'package:appwrite_app/login/bloc/create_account_cubit.dart';
-import 'package:appwrite_app/login/bloc/login_cubit.dart';
-import 'package:appwrite_app/login/pages/create_account_page.dart';
-import 'package:appwrite_app/login/pages/login_page.dart';
+import 'package:flutter_backends/login/bloc/create_account_cubit.dart';
+import 'package:flutter_backends/login/bloc/login_cubit.dart';
+import 'package:flutter_backends/login/pages/create_account_page.dart';
+import 'package:flutter_backends/login/pages/login_page.dart';
 import 'package:backend_repository/backend_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

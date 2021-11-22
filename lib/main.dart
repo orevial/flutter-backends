@@ -1,8 +1,8 @@
-import 'package:appwrite_app/authentication/bloc/authentication_cubit.dart';
-import 'package:appwrite_app/home_page.dart';
-import 'package:appwrite_app/login/pages/authentication_page.dart';
-import 'package:appwrite_app/splash_page.dart';
-import 'package:appwrite_app/utils/repository_utils.dart';
+import 'package:flutter_backends/authentication/bloc/authentication_cubit.dart';
+import 'package:flutter_backends/home_page.dart';
+import 'package:flutter_backends/login/pages/authentication_page.dart';
+import 'package:flutter_backends/splash_page.dart';
+import 'package:flutter_backends/utils/repository_utils.dart';
 import 'package:backend_repository/backend_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
