@@ -7,10 +7,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_repository/firebase_repository.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_repository/supabase_repository.dart';
 
 enum Backend {
   appwrite,
   firebase,
+  supabase,
 }
 
 Future<List<RepositoryProvider>> backendRepositories(Backend backend) {
@@ -19,6 +22,8 @@ Future<List<RepositoryProvider>> backendRepositories(Backend backend) {
       return _appwriteRepositories();
     case Backend.firebase:
       return _firebaseRepositories();
+    case Backend.supabase:
+      return _supabaseRepositories();
   }
 }
 
@@ -82,6 +87,41 @@ Future<List<RepositoryProvider>> _firebaseRepositories() async {
       create: (_) => FirebaseBreweryRepository(
         FirebaseFirestore.instance,
         _firebaseSettings,
+      ),
+    ),
+  ];
+}
+
+Future<List<RepositoryProvider>> _supabaseRepositories() async {
+  final _supabaseSettings = SupabaseSettings(
+    endpoint: 'https://mebukugmpmblkomnmjit.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzNzY3NTA1OSwiZXhwIjoxOTUzMjUxMDU5fQ.eo2udr7c9Qx2QNicz9FGjL01h2EzTqHvwVbJzGldPvc',
+    breweryCollectionId: 'breweries',
+    beersCollectionId: 'beers',
+  );
+
+  final supabase = await Supabase.initialize(
+    url: _supabaseSettings.endpoint,
+    anonKey: _supabaseSettings.anonKey,
+  );
+
+  return [
+    RepositoryProvider<AuthenticationRepository>(
+      create: (_) => SupabaseAuthenticationRepository(
+        supabase.client.auth,
+      ),
+    ),
+    RepositoryProvider<BeersRepository>(
+      create: (_) => SupabaseBeersRepository(
+        supabase.client,
+        _supabaseSettings,
+      ),
+    ),
+    RepositoryProvider<BreweryRepository>(
+      create: (_) => SupabaseBreweryRepository(
+        supabase.client,
+        _supabaseSettings,
       ),
     ),
   ];

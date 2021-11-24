@@ -39,7 +39,6 @@ class CreateAccountCubit extends Cubit<CreateAccountState> {
         )
         .then((_) => emit(CreateAccountSuccess()))
         .catchError((Object e) {
-          print(e);
       emit(CreateAccountFailure());
       emit(CreateAccountFormInProgress(
         email: '',

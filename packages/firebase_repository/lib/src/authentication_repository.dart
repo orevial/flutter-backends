@@ -5,7 +5,7 @@ class FirebaseAuthenticationRepository extends AuthenticationRepository<User> {
   final FirebaseAuth auth;
   User? _user;
 
-  FirebaseAuthenticationRepository(this.auth) : super() {}
+  FirebaseAuthenticationRepository(this.auth) : super();
 
   @override
   void checkAuthStatus() async {

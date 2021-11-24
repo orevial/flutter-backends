@@ -1,0 +1,11 @@
+name: supabase_repository
+description: Supabase repository
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+
+dependencies:
+  backend_repository:
+    path: ../backend_repository
+  supabase_flutter: ^0.2.9

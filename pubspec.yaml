@@ -21,12 +21,16 @@ dependencies:
   firebase_auth: ^3.2.0
   firebase_storage: ^10.1.0
   cloud_firestore: ^3.1.0
+  supabase_flutter: ^0.2.9
   backend_repository:
     path: packages/backend_repository
   appwrite_repository:
     path: packages/appwrite_repository
   firebase_repository:
     path: packages/firebase_repository
+  supabase_repository:
+    path: packages/supabase_repository
+
 
 dev_dependencies:
   flutter_test:

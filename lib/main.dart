@@ -11,7 +11,7 @@ import 'breweries/bloc/brewery_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final repositories = await backendRepositories(Backend.firebase);
+  final repositories = await backendRepositories(Backend.supabase);
 
   runApp(
     MyApp(repositories: repositories),

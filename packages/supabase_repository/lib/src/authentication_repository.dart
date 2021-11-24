@@ -1,22 +1,18 @@
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/models.dart';
 import 'package:backend_repository/backend_repository.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class AppwriteAuthenticationRepository
+class SupabaseAuthenticationRepository
     extends AuthenticationRepository<Session> {
-  final Account account;
+  final GoTrueClient auth;
   Session? _session;
 
-  AppwriteAuthenticationRepository(this.account) : super() {
-    account.getSession(sessionId: 'current').then((session) {
-      if (session.isExpired) {
-        throw 'Session expired';
-      }
-      _session = session;
+  SupabaseAuthenticationRepository(this.auth) : super() {
+    _session = auth.session();
+    if (_session != null && !_session!.isExpired) {
       updateAuthStatus(AuthenticationStatus.authenticated);
-    }).catchError((Object e) {
+    } else {
       updateAuthStatus(AuthenticationStatus.unauthenticated);
-    });
+    }
   }
 
   @override
@@ -29,16 +25,13 @@ class AppwriteAuthenticationRepository
 
   @override
   Future<void> login({required String email, required String password}) {
-    return account
-        .createSession(
-      // email: email,
-      // password: password,
-      // TODO Remove this, but a useful fix cause it's so boring...
-      email: 'john@company.com',
-      password: 'testtest',
+    return auth
+        .signIn(
+      email: email,
+      password: password,
     )
         .then((session) {
-      _session = session;
+      _session = session.data;
       updateAuthStatus(AuthenticationStatus.authenticated);
     });
   }
@@ -48,15 +41,22 @@ class AppwriteAuthenticationRepository
     required String email,
     required String password,
   }) {
-    return account.create(
-      email: email,
-      password: password,
-    );
+    return auth
+        .signUp(
+          email,
+          password,
+      options: AuthOptions()
+        )
+        .then((_) => print('User just signed up !'))
+        .catchError((e) {
+      print('Error while signing up');
+      throw e;
+    });
   }
 
   @override
   Future<void> logout() {
-    return account.deleteSessions().then((_) {
+    return auth.signOut().then((_) {
       _session = null;
       updateAuthStatus(AuthenticationStatus.unauthenticated);
     });
@@ -67,6 +67,6 @@ class AppwriteAuthenticationRepository
 }
 
 extension SessionUtils on Session {
-  bool get isExpired => DateTime.fromMillisecondsSinceEpoch(expire * 1000)
+  bool get isExpired => DateTime.fromMillisecondsSinceEpoch(expiresAt! * 1000)
       .isBefore(DateTime.now().toUtc());
 }

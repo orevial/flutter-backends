@@ -12,11 +12,14 @@ class Beer extends Equatable {
     required this.name,
     required this.type,
     required this.abv,
-    required this.imageId,
+    this.imageId,
   });
 
   @override
   List<Object?> get props => throw UnimplementedError();
 
-  bool get hasImage => imageId != null && imageId!.isNotEmpty;
+  bool get hasImage {
+    print(imageId);
+    return imageId != null && imageId!.isNotEmpty;
+  }
 }
