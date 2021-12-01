@@ -24,7 +24,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       case AuthenticationStatus.unauthenticated:
         return emit(const AuthenticationState.unauthenticated());
       case AuthenticationStatus.authenticated:
-        return emit(_authRepository.isAuthenticated
+        return emit(await _authRepository.isAuthenticated
             ? const AuthenticationState.authenticated()
             : const AuthenticationState.unauthenticated());
       default:

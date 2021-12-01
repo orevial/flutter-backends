@@ -15,7 +15,7 @@ abstract class AuthenticationRepository<T> {
     _controller.add(AuthenticationStatus.unknown);
   }
 
-  bool get isAuthenticated;
+  Future<bool> get isAuthenticated;
 
   void checkAuthStatus();
 
@@ -28,6 +28,11 @@ abstract class AuthenticationRepository<T> {
     required String password,
   });
 
+  Future<void> confirmAccount({
+    required String email,
+    required String confirmationCode,
+  });
+
   Future<void> login({
     required String email,
     required String password,
@@ -38,6 +43,8 @@ abstract class AuthenticationRepository<T> {
   void updateAuthStatus(AuthenticationStatus status) {
     _controller.add(status);
   }
+
+  bool get needsConfirmation;
 
   void _startTimer() {
     _timer = Timer.periodic(

@@ -1,17 +1,23 @@
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite_repository/appwrite_repository.dart';
+import 'package:aws_amplify_repository/aws_amplify_repository.dart';
 import 'package:backend_repository/backend_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_repository/firebase_repository.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_backends/amplifyconfiguration.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_repository/supabase_repository.dart';
 
 enum Backend {
   appwrite,
+  awsAmplify,
   firebase,
   supabase,
 }
@@ -20,6 +26,8 @@ Future<List<RepositoryProvider>> backendRepositories(Backend backend) {
   switch (backend) {
     case Backend.appwrite:
       return _appwriteRepositories();
+    case Backend.awsAmplify:
+      return _awsAmplifyRepositories();
     case Backend.firebase:
       return _firebaseRepositories();
     case Backend.supabase:
@@ -122,6 +130,32 @@ Future<List<RepositoryProvider>> _supabaseRepositories() async {
       create: (_) => SupabaseBreweryRepository(
         supabase.client,
         _supabaseSettings,
+      ),
+    ),
+  ];
+}
+
+Future<List<RepositoryProvider>> _awsAmplifyRepositories() async {
+  await Amplify.addPlugin(AmplifyAuthCognito());
+  await Amplify.addPlugin(
+    AmplifyDataStore(modelProvider: ModelProvider.instance),
+  );
+  await Amplify.configure(amplifyconfig);
+  return [
+    RepositoryProvider<AuthenticationRepository>(
+      create: (_) => AwsAmplifyAuthenticationRepository(
+        Amplify.Auth,
+        Amplify.Hub,
+      ),
+    ),
+    RepositoryProvider<BeersRepository>(
+      create: (_) => AwsAmplifyBeersRepository(
+        Amplify.DataStore,
+      ),
+    ),
+    RepositoryProvider<BreweryRepository>(
+      create: (_) => AwsAmplifyBreweryRepository(
+        Amplify.DataStore,
       ),
     ),
   ];

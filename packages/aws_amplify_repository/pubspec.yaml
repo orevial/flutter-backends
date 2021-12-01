@@ -1,0 +1,13 @@
+name: aws_amplify_repository
+description: AWS Amplify repository
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+
+dependencies:
+  backend_repository:
+    path: ../backend_repository
+  amplify_flutter: ^0.2.10
+  amplify_datastore: ^0.2.10
+  amplify_auth_cognito: ^0.2.0

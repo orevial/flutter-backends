@@ -46,5 +46,15 @@ class FirebaseAuthenticationRepository extends AuthenticationRepository<User> {
   }
 
   @override
-  bool get isAuthenticated => _user != null;
+  Future<bool> get isAuthenticated async => _user != null;
+
+  @override
+  bool get needsConfirmation => false;
+
+  @override
+  Future<void> confirmAccount({
+    required String email,
+    required String confirmationCode,
+  }) =>
+      throw UnimplementedError();
 }

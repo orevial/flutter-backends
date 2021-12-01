@@ -63,7 +63,17 @@ class SupabaseAuthenticationRepository
   }
 
   @override
-  bool get isAuthenticated => _session != null;
+  Future<bool> get isAuthenticated async => _session != null;
+
+  @override
+  bool get needsConfirmation => false;
+
+  @override
+  Future<void> confirmAccount({
+    required String email,
+    required String confirmationCode,
+  }) =>
+      throw UnimplementedError();
 }
 
 extension SessionUtils on Session {

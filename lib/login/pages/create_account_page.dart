@@ -39,15 +39,39 @@ class CreateAccountPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
+          BlocBuilder<CreateAccountCubit, CreateAccountState>(
+            builder: (_, state) {
+              return state is CreateAccountNeedsConfirmation
+                  ? Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        onChanged: (code) =>
+                            createAccount.updateConfirmationCode(code),
+                        decoration: const InputDecoration(
+                          label: Text('Confirmation code'),
+                        ),
+                      ),
+                    )
+                  : Container();
+            },
+            buildWhen: (_, currentState) =>
+                currentState is CreateAccountNeedsConfirmation,
+          ),
+          const SizedBox(height: 20),
           BlocConsumer<CreateAccountCubit, CreateAccountState>(
-            listenWhen: (_, state) => state is! CreateAccountFormInProgress,
+            listenWhen: (_, state) =>
+                state is! CreateAccountFormInProgress &&
+                state is! CreateAccountNeedsConfirmation,
             listener: (context, state) {
               switch (state.runtimeType) {
                 case CreateAccountInProgress:
+                case ConfirmAccountInProgress:
                   showLoadingDialog(context, _dialogKey);
                   break;
                 case CreateAccountSuccess:
-                  Navigator.of(_dialogKey.currentContext!).pop();
+                  if (_dialogKey.currentContext != null) {
+                    Navigator.of(_dialogKey.currentContext!).pop();
+                  }
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute<void>(
                       builder: (_) => const AuthenticationPage(),
@@ -71,12 +95,20 @@ class CreateAccountPage extends StatelessWidget {
               }
             },
             builder: (_, state) {
+              if (state is CreateAccountNeedsConfirmation) {
+                return ElevatedButton(
+                  onPressed: state.isValid
+                      ? () => createAccount.confirmAccount()
+                      : null,
+                  child: const Text('Confirm account'),
+                );
+              }
               return ElevatedButton(
                 onPressed:
                     state is! CreateAccountFormInProgress || state.isValid
                         ? () => createAccount.createAccount()
                         : null,
-                child: const Text('CreateAccount'),
+                child: const Text('Create account'),
               );
             },
           ),

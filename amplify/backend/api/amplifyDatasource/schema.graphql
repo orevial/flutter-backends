@@ -1,0 +1,18 @@
+type Beer @model @auth(rules: [{allow: public}, {allow: private, operations: [read]}]) {
+  id: ID!
+  name: String!
+  type: String!
+  abv: Float
+  imageInternalId: String
+  imageExternalUrl: String
+  breweryID: ID @index(name: "byBrewery")
+}
+
+type Brewery @model @auth(rules: [{allow: public}, {allow: private, operations: [read]}]) {
+  id: ID!
+  name: String
+  country: String
+  description: String
+  beers: [Beer] @hasMany(indexName: "byBrewery", fields: ["id"])
+}
+ 
